@@ -1,6 +1,8 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
+  annotations:
+      keda.sh/namespace: wx-dev15
   name: fountain-repro-http-scaler
   namespace: fountain-repro
 spec:
@@ -29,10 +31,8 @@ spec:
     - type: cpu
       metricType: Utilization
       metadata:
-        value: "85"
-    - type: prometheus
+        value: "80"
+    - type: memory
+      metricType: Utilization
       metadata:
-        metricName: fountain_repro_http_request_rate
-        query: sum(rate(traces_span_metrics_duration_milliseconds_count{k8s_namespace_name="fountain-repro",service_name="fountain-repro-http",span_name=~"HTTP (GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)"}[5m])) or vector(0)
-        serverAddress: http://kube-prometheus-kube-prome-prometheus.prometheus.svc.cluster.local:9090
-        threshold: "0.05"
+        value: "90"
